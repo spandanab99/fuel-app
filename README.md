@@ -1,4 +1,5 @@
 # Fuel App
+Frontend app designed using React Framework
 ## Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
