@@ -1,25 +1,30 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react'
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 
-function App() {
+import LandingPage from './components/pages/LandingPage'
+import LoginPage from './components/pages/LoginPage'
+import RegisterPage from './components/pages/RegisterPage'
+import ProfilePage from './components/pages/ProfilePage'
+import HistoryPage from './components/pages/HistoryPage'
+import QuotePage from './components/pages/QuotePage'
+import Navbar from './components/Navbar'
+
+import './App.css'
+
+export default function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <Router>
+      <Navbar/>
+      <div>
+        <Switch>
+          <Route path="/login" component={LoginPage} />
+          <Route path="/register" component={RegisterPage} />
+          <Route path="/profile" component={ProfilePage} />
+          <Route path="/history" component={HistoryPage} />
+          <Route path="/quote" component={QuotePage} />
+          <Route path="/" component={LandingPage} />
+        </Switch>
+      </div>
+    </Router>
+  )
 }
-
-export default App;
