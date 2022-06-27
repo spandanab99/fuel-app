@@ -6,7 +6,7 @@ import '../../App.css'
 
 export default function QuotePage() {
 
-    const initialValues = { gallons: "", address: "19-2 Downtown, California, 324231", suggestedPrice: 50 };
+    const initialValues = { gallons: "", address: " 47 W 13th St, New York, NY 10011 ", suggestedPrice: 50 };
     let [due, setDue] = useState('');
     const [formValues, setFormValues] = useState(initialValues);
     const [formErrors, setFormErrors] = useState({});
@@ -47,16 +47,16 @@ export default function QuotePage() {
 
     return (
         <div className="quote text-center m-5-auto">
-            <h2>Get Quote</h2>
+            <h1>Get Quote</h1>
             <form action="">
                 <p>
                     <label>Gallons Required</label><br />
-                    <input type="number" name="gallons" onChange={handleChange} value={formValues.gallons} placeholder="10" required />
+                    <input type="number" name="gallons" onChange={handleChange} value={formValues.gallons} placeholder="5" required />
                 </p>
                 <p className="validation-error">{formErrors.gallons}</p>
                 <p>
                     <label>Address</label> <br />
-                    <input disabled type="text" name="address" value={formValues.address} />
+                    <input type="text" name="address" value={formValues.address}  />
                 </p>
                 <p>
                     <label>Delivery Date</label><br />
@@ -65,7 +65,7 @@ export default function QuotePage() {
                 <p className="validation-error">{formErrors.delivery_date}</p>
                 <p>
                     <label>Suggested Price</label><br />
-                    <input disabled type="text" name="price" value={formValues.suggestedPrice} />
+                    <input type="text" name="price" value={formValues.suggestedPrice} />
                 </p>
                 <p>
                     <label>Total Amount Due</label><br />
