@@ -14,7 +14,6 @@ export default function LoginPage() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormErrors(validate(formValues));
     setFormValues({ ...formValues, [name]: value });
   };
 

@@ -44,7 +44,6 @@ export default function QuotePage() {
     const handleChange = (e) => {
         const { name, value } = e.target;
         console.log("requestedGallons is set to ", formValues.requestedGallons);
-        setFormErrors(validate(formValues));
         setFormValues({ ...formValues, [name]: value });
         setDue(formValues.requestedGallons * formValues.suggestedPrice);
     };

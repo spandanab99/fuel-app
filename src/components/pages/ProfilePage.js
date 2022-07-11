@@ -39,7 +39,6 @@ export default function ProfilePage() {
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setFormErrors(validate(formValues));
         setFormValues({ ...formValues, [name]: value });
     };
 
@@ -89,7 +88,7 @@ export default function ProfilePage() {
     }, [formErrors]);
     const validate = (values) => {
         const errors = {};
-        const regex = /^[0-9]{5-9}$/;
+        const regex = /(^\d{5}$)|(^\d{5}-\d{4}$)/;;
         if (!values.fullName) {
             errors.fullName = "Full Name is required!";
         }
