@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import { useHistory } from "react-router";
 
 import '../../App.css'
 
 export default function LoginPage() {
 
+  const history = useHistory();
   const initialValues = { email: "", password: "" };
   const [formValues, setFormValues] = useState(initialValues);
   const [formErrors, setFormErrors] = useState({});
@@ -13,7 +15,6 @@ export default function LoginPage() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormErrors(validate(formValues));
     setFormValues({ ...formValues, [name]: value });
   };
 
@@ -37,6 +38,7 @@ export default function LoginPage() {
       if (res.status === 200) {
         setMessage({ value: '', hide: true, error: false });
         localStorage.setItem('x-token', resJson.data);
+        history.push('/profile');
       } else {
         console.log(resJson);
         setMessage({ value: resJson.message, hide: false, error: true });
