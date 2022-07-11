@@ -7,6 +7,7 @@ import ProfilePage from './components/pages/ProfilePage'
 import HistoryPage from './components/pages/HistoryPage'
 import QuotePage from './components/pages/QuotePage'
 import Navbar from './components/Navbar'
+import GaurdedRoute from './components/GaurdedRoute'
 
 import './App.css'
 
@@ -18,9 +19,9 @@ export default function App() {
         <Switch>
           <Route path="/login" component={LoginPage} />
           <Route path="/register" component={RegisterPage} />
-          <Route path="/profile" component={ProfilePage} />
-          <Route path="/history" component={HistoryPage} />
-          <Route path="/quote" component={QuotePage} />
+          <GaurdedRoute exact path="/profile" component={ProfilePage} />
+          <GaurdedRoute exact path="/history" component={HistoryPage} />
+          <GaurdedRoute exact path="/quote" component={QuotePage} />
           <Route path="/" component={LandingPage} />
         </Switch>
       </div>
