@@ -6,7 +6,9 @@ import '../../App.css'
 
 export default function QuotePage() {
 
-    const initialValues = { requestedGallons: 0, address: " 47 W 13th St, New York, NY 10011 ", suggestedPrice: 10, due: null };
+    const date = new Date();
+    const defaultDate = date.toLocaleDateString('en-CA');
+    const initialValues = { requestedGallons: 10, deliveryAddress: "", suggestedPrice: 10, due: null,deliveryDate:defaultDate };
     const [due, setDue] = useState(0);
     const [formValues, setFormValues] = useState(initialValues);
     const [formErrors, setFormErrors] = useState({});
@@ -23,7 +25,7 @@ export default function QuotePage() {
                 method: "POST",
                 body: JSON.stringify({
                     requestedGallons: formValues.requestedGallons,
-                    deliveryDate: null,
+                    deliveryDate: formValues.deliveryDate,
                 }),
             })
             let resJson = await res.json();
@@ -43,13 +45,14 @@ export default function QuotePage() {
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        console.log("requestedGallons is set to ", formValues.requestedGallons);
+        console.log("requestedGallons is set to ", formValues);
         setFormValues({ ...formValues, [name]: value });
         setDue(formValues.requestedGallons * formValues.suggestedPrice);
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        getData();
         setFormErrors(validate(formValues));
         if (Object.keys(formErrors).length !== 0) {
             return false;
@@ -57,9 +60,10 @@ export default function QuotePage() {
         setIsSubmit(true);
     };
 
-    useEffect(() => {
+    useEffect(()=>{
         getData();
-    }, [])
+    },[])
+
     useEffect(() => {
 
         if (Object.keys(formErrors).length === 0 && isSubmit) {
@@ -70,9 +74,6 @@ export default function QuotePage() {
         const errors = {};
         if (!values.requestedGallons) {
             errors.requestedGallons = "Gallons is required!";
-        }
-        if (!values.delivery_date) {
-            errors.delivery_date = "Date is required!";
         }
         return errors;
     };
@@ -88,23 +89,28 @@ export default function QuotePage() {
                 <p className="validation-error">{formErrors.requestedGallons}</p>
                 <p>
                     <label>Address</label> <br />
-                    <input type="text" name="address" value={formValues.address} />
+                    <input type="text" name="deliveryAddress" value={formValues.deliveryAddress} />
                 </p>
                 <p>
                     <label>Delivery Date</label><br />
-                    <input type="date" name="delivery_date" value={formValues.delivery_date} onChange={handleChange} required />
+                    <input type="date" name="deliveryDate" value={formValues.deliveryDate} onChange={handleChange} defaultValue={defaultDate} required />
                 </p>
-                <p className="validation-error">{formErrors.delivery_date}</p>
+                <p className="validation-error">{formErrors.deliveryDate}</p>
+                
+                <p>
+                    <button id="sub_btn" type="submit" onClick={handleSubmit}>Submit</button>
+                </p>
+
+                <hr/>
+
                 <p>
                     <label>Suggested Price</label><br />
                     <input type="text" name="price" value={formValues.suggestedPrice} />
                 </p>
+
                 <p>
                     <label>Total Amount Due</label><br />
-                    <input type="text" name="due" onChange={handleChange} value={due} />
-                </p>
-                <p>
-                    <button id="sub_btn" type="submit" onClick={handleSubmit}>Submit</button>
+                    <input type="text" name="due"  value={due} />
                 </p>
             </form>
 
