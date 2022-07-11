@@ -3,7 +3,7 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  font-family: "Roboto", sans-serif
+  font-family: 'Times New Roman', Times, serif
 }
 
 body {
@@ -21,7 +21,7 @@ body {
   width: 10rem;
   background: #222;
   border: none;
-  color: #fff;
+  color: #b3a3f2;
   font-size: 1.2rem;
   transition: all .5s;
   cursor: pointer;
@@ -30,12 +30,13 @@ body {
 
 .land-button {
   margin-top: 5rem;
+  border-radius: 4px;
   margin-right: 1rem;
   padding: .6rem;
   width: 10rem;
-  background: #fcfafa;
+  background: #b3a3f2;
   border: none;
-  color: rgb(22, 20, 20);
+  color: rgb(251, 247, 247);
   font-size: 1.2rem;
   transition: all .5s;
   cursor: pointer;
@@ -46,13 +47,13 @@ body {
 /***    Landing Page     ***/
 .main-title,
 .main-para {
-  color: #f1f1f1
+  color: #b3a3f2
 }
 
 .main-title {
-  padding-top: 10rem;
-  font-size: 5rem;
-  font-family: 'Fascinate', cursive;
+  padding-top: 9rem;
+  font-size: 3rem;
+  font-family:'Times New Roman', Times, serif;
   text-transform: uppercase
 }
 
@@ -112,7 +113,7 @@ form label {
 }
 
 input, select{
-  width: 17rem;
+  width: 20rem;
   padding: .3rem;
   border-radius: 5px;
   outline: none;
@@ -140,13 +141,13 @@ input, select{
   width: 100%;
   padding: .3rem;
   border: none;
-  background: #222;
-  color: #fff;
+  background: #b3a3f2;
+  color: rgb(5, 4, 4);
   border-radius: 3px;
 }
 
 #sub_btn:hover {
-  background: #333;
+  background: rgb(232, 229, 229);
   transition: all .5s
 }
 
@@ -178,15 +179,15 @@ form span {
   margin: auto;
   margin-top: 50px;
   font-size: 0.9em;
-  font-family: sans-serif;
+  font-family: 'Times New Roman', Times, serif;
   min-width: 400px;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 0 20px rgba(244, 236, 236, 0.15);
 }
 
 .quotes thead tr {
-  background-color: #009879;
-  color: #ffffff;
-  text-align: left;
+  background-color: #6f49cd43;
+  color: #030303;
+  text-align: center;
 }
 
 .quotes th,
@@ -195,20 +196,20 @@ form span {
 }
 
 .quotes tbody tr {
-  border-bottom: 1px solid #dddddd;
+  border-bottom: 1px solid #020202;
 }
 
 .quotes tbody tr:nth-of-type(even) {
-  background-color: #f3f3f3;
+  background-color: #f4f3f3;
 }
 
 .quotes tbody tr:last-of-type {
-  border-bottom: 2px solid #009879;
+  border-bottom: 2px solid #6057b166;
 }
 
 .quotes tbody tr.active-row {
   font-weight: bold;
-  color: #009879;
+  color: #b3a3f2;
 }
 
 main {
@@ -219,15 +220,15 @@ main {
   display: flex;
   align-items: center;
   
-  background: rebeccapurple;
-  color: white;
-  font-family: Helvetica;
-  font-weight: 300;
+  background: #6f49cd43;
+  color: rgb(14, 13, 13);
+  font-family: 'Times New Roman', Times, serif;
+  font-weight: 200;
 }
 
 .navbar__title {
   margin-right: auto;
-  font-size: 150%;
+  font-size: 100%;
   padding: 12px 16px;
 }
 
@@ -238,17 +239,19 @@ main {
 }
 
 .navbar__item a {
-  color: white;
+  color: rgb(10, 10, 10);
 }
 
 .navbar__item a:hover {
   color: white;
   text-decoration: none;
+  background-color: #864da3;
+
 }
 
 .landing {
   background-color: #222;
-  height: 650px;
+  height: 950px;
 }
 
 .validation-error{

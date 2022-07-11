@@ -6,73 +6,111 @@ import '../../App.css'
 
 export default function QuotePage() {
 
-    const initialValues = { gallons: "", address: "19-2 Downtown, California, 324231", suggestedPrice: 50 };
-    let [due, setDue] = useState('');
+    const date = new Date();
+    const defaultDate = date.toLocaleDateString('en-CA');
+    const initialValues = { requestedGallons: 10, deliveryAddress: "", suggestedPrice: 10, due: null,deliveryDate:defaultDate };
+    const [due, setDue] = useState(0);
     const [formValues, setFormValues] = useState(initialValues);
     const [formErrors, setFormErrors] = useState({});
     const [isSubmit, setIsSubmit] = useState(false);
+    const getData = async () => {
+        try {
+            let res = await fetch('http://localhost:8000/quote', {
+
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'x-token': localStorage.getItem('x-token')
+                },
+                method: "POST",
+                body: JSON.stringify({
+                    requestedGallons: formValues.requestedGallons,
+                    deliveryDate: formValues.deliveryDate,
+                }),
+            })
+            let resJson = await res.json();
+            let data = resJson.data;
+            console.log(data);
+            if (Object.getOwnPropertyNames(data).length !== 0) {
+                setFormValues({ ...data });
+                setDue(data.due);
+
+            }
+
+        }
+        catch (err) {
+            console.log(err);
+        }
+    }
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setFormErrors(validate(formValues));
+        console.log("requestedGallons is set to ", formValues);
         setFormValues({ ...formValues, [name]: value });
+        setDue(formValues.requestedGallons * formValues.suggestedPrice);
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        getData();
         setFormErrors(validate(formValues));
         if (Object.keys(formErrors).length !== 0) {
             return false;
         }
-        setDue(formValues.gallons * formValues.suggestedPrice);
         setIsSubmit(true);
     };
 
+    useEffect(()=>{
+        getData();
+    },[])
+
     useEffect(() => {
-        console.log(formErrors);
+
         if (Object.keys(formErrors).length === 0 && isSubmit) {
-            console.log(formValues);
+            // console.log(formValues);
         }
     }, [formErrors]);
     const validate = (values) => {
         const errors = {};
-        if (!values.gallons) {
-            errors.gallons = "Gallons is required!";
-        }
-        if (!values.delivery_date) {
-            errors.delivery_date = "Date is required!";
+        if (!values.requestedGallons) {
+            errors.requestedGallons = "Gallons is required!";
         }
         return errors;
     };
 
     return (
         <div className="quote text-center m-5-auto">
-            <h2>Get Quote</h2>
+            <h1>Get Quote</h1>
             <form action="">
                 <p>
                     <label>Gallons Required</label><br />
-                    <input type="number" name="gallons" onChange={handleChange} value={formValues.gallons} placeholder="10" required />
+                    <input type="number" name="requestedGallons" onChange={handleChange} value={formValues.requestedGallons} placeholder="5" required />
                 </p>
-                <p className="validation-error">{formErrors.gallons}</p>
+                <p className="validation-error">{formErrors.requestedGallons}</p>
                 <p>
                     <label>Address</label> <br />
-                    <input disabled type="text" name="address" value={formValues.address} />
+                    <input type="text" name="deliveryAddress" value={formValues.deliveryAddress} />
                 </p>
                 <p>
                     <label>Delivery Date</label><br />
-                    <input type="date" name="delivery_date" value={formValues.delivery_date} onChange={handleChange} required />
+                    <input type="date" name="deliveryDate" value={formValues.deliveryDate} onChange={handleChange} defaultValue={defaultDate} required />
                 </p>
-                <p className="validation-error">{formErrors.delivery_date}</p>
-                <p>
-                    <label>Suggested Price</label><br />
-                    <input disabled type="text" name="price" value={formValues.suggestedPrice} />
-                </p>
-                <p>
-                    <label>Total Amount Due</label><br />
-                    <input disabled type="text" name="due" onChange={handleChange} value={due} />
-                </p>
+                <p className="validation-error">{formErrors.deliveryDate}</p>
+                
                 <p>
                     <button id="sub_btn" type="submit" onClick={handleSubmit}>Submit</button>
+                </p>
+
+                <hr/>
+
+                <p>
+                    <label>Suggested Price</label><br />
+                    <input type="text" name="price" value={formValues.suggestedPrice} />
+                </p>
+
+                <p>
+                    <label>Total Amount Due</label><br />
+                    <input type="text" name="due"  value={due} />
                 </p>
             </form>
 
