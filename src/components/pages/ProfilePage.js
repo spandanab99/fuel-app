@@ -1,18 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { useHistory } from "react-router";
 
 import '../../App.css';
 
-
-
-
 export default function ProfilePage() {
-    const history = useHistory();
     const initialValues = { fullName: "", address1: "", address2: "", city: "", state: "TX", zipcode: null };
     const [formValues, setFormValues] = useState({ ...initialValues });
     const [message, setMessage] = useState({ value: "", hide: true, error: false });
     const [formErrors, setFormErrors] = useState({});
     const [isSubmit, setIsSubmit] = useState(false);
+    const [isProfile, setIsProfile] = useState(false);
 
     const getData = async () => {
         try {
@@ -25,6 +21,10 @@ export default function ProfilePage() {
             })
             let resJson = await res.json();
             let data = resJson.data;
+
+            if (data != null){
+                setIsProfile(true);
+            }
             
             if (Object.getOwnPropertyNames(data).length !== 0) {
                 setFormValues({ ...data }); 
@@ -47,13 +47,17 @@ export default function ProfilePage() {
         setFormErrors(validate(formValues));
         setIsSubmit(true);
         try {
+            let method = "POST"
+            if (isProfile){
+                method = "PATCH"
+            }
             let res = await fetch("http://localhost:8000/profile", {
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json',
                     'x-token': localStorage.getItem('x-token')
                 },
-                method: "POST",
+                method: method,
                 body: JSON.stringify({
                     fullName: formValues.fullName,
                     address1: formValues.address1,
@@ -66,11 +70,9 @@ export default function ProfilePage() {
             });
             let resJson = await res.json();
             if (res.status === 200) {
-                console.log(res.status);
                 setMessage({ value: "Profile Updated Successfully!", hide: false, error: false });
                 setFormValues({ ...resJson.data })
             } else {
-                console.log(resJson);
                 setMessage({ value: resJson.message, hide: false, error: true });
             }
         } catch (err) {
