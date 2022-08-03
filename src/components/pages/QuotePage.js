@@ -1,21 +1,20 @@
 import React, { useState, useEffect } from 'react'
 import '../../App.css'
 
-
 export default function QuotePage() {
 
     const date = new Date();
     const defaultDate = date.toLocaleDateString('en-CA');
-    const initialValues = { requestedGallons: 10, deliveryAddress: "", suggestedPrice: 10, due: null,deliveryDate:defaultDate };
-    const [due, setDue] = useState(0);
+    const initialValues = { requestedGallons: null, deliveryAddress: "", suggestedPrice: null, due: null,deliveryDate:defaultDate };
+    const [due, setDue] = useState(null);
     const [formValues, setFormValues] = useState(initialValues);
     const [formErrors, setFormErrors] = useState({});
     const [isSubmit, setIsSubmit] = useState(false);
     const [message, setMessage] = useState({ value: "", hide: true, error: false });
 
-    const submitData = async () => {
+    const submitData = async (route) => {
         try {
-            let res = await fetch('http://localhost:8000/quote', {
+            let res = await fetch(`http://localhost:8000/${route}`, {
 
                 headers: {
                     'Accept': 'application/json',
@@ -32,7 +31,8 @@ export default function QuotePage() {
             let data = resJson.data;
 
             if (res.status === 200) {
-                setMessage({ value: "Quote submitted Successfully!", hide: false, error: false });
+                let hideMessage = route == "quote" ? false : true;
+                setMessage({ value: "Quote submitted Successfully!", hide: hideMessage, error: false });
                 if (Object.getOwnPropertyNames(data).length !== 0) {
                     setFormValues({...formValues,suggestedPrice:data.suggestedPrice});
                     setDue(data.totalDue);
@@ -80,7 +80,17 @@ export default function QuotePage() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        submitData();
+        submitData('quote');
+        setFormErrors(validate(formValues));
+        if (Object.keys(formErrors).length !== 0) {
+            return false;
+        }
+        setIsSubmit(true);
+    };
+
+    const handleGetQuote = (e) => {
+        e.preventDefault();
+        submitData('quote/get-quote');
         setFormErrors(validate(formValues));
         if (Object.keys(formErrors).length !== 0) {
             return false;
@@ -92,9 +102,7 @@ export default function QuotePage() {
         getProfile();
     },[])
 
-    useEffect(()=>{
-        setDue(formValues.requestedGallons * formValues.suggestedPrice);
-    },[formValues])
+    
 
     useEffect(() => {
 
@@ -133,7 +141,10 @@ export default function QuotePage() {
                 <p className="validation-error">{formErrors.deliveryDate}</p>
                 
                 <p>
-                    <button id="sub_btn" type="submit" onClick={handleSubmit}>Submit</button>
+                    <button id="sub_btn" type="submit" disabled={!formValues.requestedGallons} onClick={handleGetQuote}>Get Quote</button>
+                </p>
+                <p>
+                    <button id="sub_btn" type="submit" disabled={!formValues.requestedGallons} onClick={handleSubmit}>Submit</button>
                 </p>
 
                 <hr/>
